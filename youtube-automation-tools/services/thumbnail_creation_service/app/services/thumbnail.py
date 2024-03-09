@@ -1,9 +1,11 @@
 from openai import OpenAI
-from ..models import ThumbnailResponse, ImageData  # Adjust import path as necessary
+from ..schemas import ThumbnailResponse, ImageData  # Adjust import path as necessary
 import asyncio
+from ..config import Settings
 
-# Initialize the OpenAI client with your API key
-client = OpenAI()
+
+settings = Settings()
+client = OpenAI(api_key=settings.openai_api_key)
 
 async def generate_thumbnail(description: str) -> ThumbnailResponse:
     # Generate an image based on the provided description

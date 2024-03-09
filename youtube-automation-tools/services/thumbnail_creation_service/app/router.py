@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .models import ThumbnailRequest, ThumbnailResponse
+from .schemas import ThumbnailRequest, ThumbnailResponse
 from .services.thumbnail import generate_thumbnail
 
 router = APIRouter()

@@ -5,3 +5,4 @@ openai-whisper
 setuptools-rust
 python-multipart
 aiofiles
+pydantic-settings

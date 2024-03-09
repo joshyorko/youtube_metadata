@@ -32,6 +32,8 @@ services:
     networks:
       - app_network
     restart: on-failure
+    env_file:
+      - ./env_variables/dev/.env
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
 
 
