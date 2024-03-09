@@ -19,7 +19,7 @@ services:
     networks:
       - app_network
     restart: on-failure
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
   thumbnail_creation_service:
     build: ./services/thumbnail_creation_service/Dockerfile
