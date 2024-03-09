@@ -60,6 +60,8 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+
+test_thumbs/
 # Flask stuff:
 instance/
 .webassets-cache
