@@ -13,32 +13,4 @@ This project provides a scaffold for a FastAPI microservice designed for YouTube
 
 ## Setup
 
-Ensure Docker and Docker Compose are installed on your machine. Then, navigate to the project root directory and run the following command to start the services:
-
-```bash
-docker-compose up
-```
-
-## API Documentation
-
-Each service provides its own API documentation using FastAPI’s built-in tools. After starting the services, you can access the documentation at the `/docs` endpoint of each service (e.g., `http://localhost:<service_port>/docs`).
-
-## Error Handling and Logging
-
-Each service includes robust error handling and logging mechanisms to ensure smooth operation and easy debugging.
-
-## Security Features
-
-The project prioritizes security features, such as API rate limiting and secure API keys management, especially for the YouTube upload service.
-
-## Scalability
-
-The services are designed for scalability to accommodate varying load levels.
-
-## Contributing
-
-Please read `CONTRIBUTING.md` for details on our code of conduct, and the process for submitting pull requests to us.
-
-## License
-
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+WORK IN PROGRESS
