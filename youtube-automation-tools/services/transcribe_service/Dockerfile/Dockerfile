@@ -8,6 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libavcodec-extra \
+    git \
  && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file to the container

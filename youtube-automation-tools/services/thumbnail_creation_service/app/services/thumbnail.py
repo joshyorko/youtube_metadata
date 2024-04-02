@@ -15,7 +15,8 @@ async def generate_thumbnail(description: str) -> ThumbnailResponse:
         prompt=description,
         size="1024x1024",
         quality="hd",
-        style="natural"
+        style="natural",
+        n=1
     )
     
     if hasattr(response, 'data') and len(response.data) > 0:

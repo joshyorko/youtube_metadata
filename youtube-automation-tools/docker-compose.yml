@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   transcribe_service:
@@ -19,7 +18,7 @@ services:
     networks:
       - app_network
     restart: on-failure
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]
 
   thumbnail_creation_service:
     build: ./services/thumbnail_creation_service/Dockerfile

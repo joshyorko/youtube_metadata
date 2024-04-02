@@ -7,7 +7,8 @@ import tempfile
 import os
 
 # Load the Whisper model globally to optimize resource usage
-model = whisper.load_model("tiny")  # Consider adjusting model size as needed
+model = whisper.load_model("small.en")  # Consider adjusting model size as needed
+
 
 async def transcribe_audio_file(file: UploadFile) -> TranscriptionResult:
     # Create a temporary file using aiofiles for asynchronous file operations
@@ -23,6 +24,7 @@ async def transcribe_audio_file(file: UploadFile) -> TranscriptionResult:
     # Perform transcription using Whisper in an asynchronous thread
     try:
         result = await asyncio.to_thread(model.transcribe, temp_file_path)
+        print(result['segments'])
         
         segments = [Segment(
             start=0,  # Placeholder start time

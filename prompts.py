@@ -11,6 +11,8 @@ from decimal import Decimal
 
 
 ANALYSIS_TYPES = {
+
+    "youtube_shorts_title_creation": "As an Analyst API specializing in YouTube Shorts title creation, your task is to generate titles that are concise, SEO-friendly, and engaging. Aim to capture the essence of the video's story with a focus on emotional resonance, specific details, and viewer curiosity. Consider highlighting key moments, emotions, or figures that stand out. Use of emojis for visual appeal and questions to provoke thought is encouraged, but balance these with brevity to ensure titles are impactful and to the point. ",
     "president_speech_creator": "You are the President of the United States. You have been asked to address the nation on a specific topic. Write a speech that is 3,500 characters long.",
     "json_creator": "Create a JSON object based on the provided data.",
     "visual_content_synthesis": "Synthesize the provided video transcription to identify key visual elements, themes, or moments that are most representative of the video content. Use this synthesis to suggest creative, visually appealing concepts for a YouTube thumbnail.",
@@ -78,6 +80,15 @@ ANALYSIS_TYPES = {
 }
 
 JSON_SCHEMAS = {
+    "youtube_shorts_title_creation": {
+        "video_titles": {
+            "video_title_1": "string",
+            "video_title_2": "string",
+            "video_title_3": "string"
+        },
+        "Best_title": "string (the best title among the generated options)",
+            },
+
     "president_speech_creator": {
         "speech": "string (the speech written by the President of the United States)",
     },
