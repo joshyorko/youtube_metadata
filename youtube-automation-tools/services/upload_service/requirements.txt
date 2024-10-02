@@ -1,6 +1,6 @@
-fastapi==0.68.1
-uvicorn==0.15.0
-python-multipart==0.0.5
-google-auth-oauthlib==0.4.6
-google-api-python-client==2.26.1
+fastapi
+uvicorn
+python-multipart
+google-auth-oauthlib
+google-api-python-client
 pydantic-settings
