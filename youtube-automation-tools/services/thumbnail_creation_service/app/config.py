@@ -29,7 +29,6 @@ class Settings(BaseSettings):
     
     openai_api_key: str = read_secret("OPENAI_API_KEY")
 
-    anthropic_api_key: str = read_secret("ANTHROPIC_API_KEY")
     
     #NOTE: It might be needed where you have to include the paramater env_file=".env" into the SettingsConfigDict object
     model_config = SettingsConfigDict(env_file=".env")
