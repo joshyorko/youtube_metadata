@@ -1,21 +1,38 @@
+name: youtube-automation-tools
+
 services:
-  transcribe_service:
-    build: ./services/transcribe_service/Dockerfile
+  transcribe-service:
+    build: ./services/transcribe_service
     image: ghcr.io/joshyorko/transcribe_service:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    runtime: nvidia
+  
+    container_name: transcribe-service
     ports:
       - "8000:8000"
     volumes:
       - ./services/transcribe_service:/app
     environment:
       - SERVICE_ENV="development"
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     networks:
       - app_network
-    restart: on-failure
+    restart: always
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]
 
-  thumbnail_creation_service:
-    build: ./services/thumbnail_creation_service/Dockerfile
+
+
+  thumbnail-creation-service:
+    build: ./services/thumbnail_creation_service
     image: ghcr.io/joshyorko/thumbnail_creation_service:latest
+    container_name: thumbnail-creation-service
     ports:
       - "8001:8001"
     volumes:
@@ -24,42 +41,16 @@ services:
       - SERVICE_ENV="development"
     networks:
       - app_network
-    restart: on-failure
+    restart: always
     env_file:
       - ./.env
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
 
-  #metadata_service:
-  #  build: ./services/metadata_service
-  #  image: ghcr.io/joshyorko/metadata_service:latest
-  #  ports:
-  #    - "8003:8000"
-  #  volumes:
-  #    - metadata_storage:/app/data  # Assuming this service needs to persist data
-  #  environment:
-  #    - SERVICE_ENV=development
-  #  networks:
-  #    - app_network
-  #  restart: on-failure
-
-  #upload_service:
-  #  build: ./services/upload_service
-  #  image: ghcr.io/joshyorko/upload_service:latest
-  #  ports:
-  #    - "8004:8000"
-  #  volumes:
-  #    - ./services/upload_service:/app
-  #  depends_on:
-  #    - metadata_service
-  #  environment:
-  #    - SERVICE_ENV=development
-  #  networks:
-  #    - app_network
-  #  restart: on-failure
 
 networks:
   app_network:
     driver: bridge
 
 volumes:
-  metadata_storage:  # Define the volume if your service requires data persistence
+  app_data:
+    driver: local

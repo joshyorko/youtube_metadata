@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-pydantic
-git+https://github.com/openai/whisper.git
-setuptools-rust
-python-multipart
-aiofiles
-pydantic-settings

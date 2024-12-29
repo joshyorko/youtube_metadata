@@ -1,6 +1,6 @@
-fastapi==0.68.1
-uvicorn==0.15.0
-pydantic==1.8.2
-python-multipart==0.0.5
-requests==2.26.0
+fastapi
+uvicorn
+pydantic
+python-multipart
+requests
 pydantic-settings

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+#git+https://github.com/openai/whisper.git
+openai-whisper
+setuptools-rust
+python-multipart
+aiofiles
+pydantic-settings
+pytubefix
+moviepy
