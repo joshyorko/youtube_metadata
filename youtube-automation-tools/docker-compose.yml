@@ -46,6 +46,31 @@ services:
       - ./.env
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
 
+  ci-cd-pipeline:
+    image: ghcr.io/joshyorko/ci_cd_pipeline:latest
+    container_name: ci-cd-pipeline
+    build:
+      context: .
+      dockerfile: ./ci_cd/Dockerfile
+    environment:
+      - CI=true
+    networks:
+      - app_network
+    restart: always
+    command: ["./ci_cd/run_pipeline.sh"]
+
+  gitops-deployment:
+    image: ghcr.io/joshyorko/gitops_deployment:latest
+    container_name: gitops-deployment
+    build:
+      context: .
+      dockerfile: ./gitops/Dockerfile
+    environment:
+      - GITOPS=true
+    networks:
+      - app_network
+    restart: always
+    command: ["./gitops/deploy.sh"]
 
 networks:
   app_network:
