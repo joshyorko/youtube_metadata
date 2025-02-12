@@ -4,6 +4,6 @@ from .services.thumbnail import generate_thumbnail
 
 router = APIRouter()
 
-@router.post("/generate-thumbnail/", response_model=ThumbnailResponse)
+@router.post("/api/v1/generate-thumbnail/", response_model=ThumbnailResponse, tags=["Thumbnail"])
 async def create_thumbnail(request: ThumbnailRequest):
     return await generate_thumbnail(request.description)

@@ -5,10 +5,7 @@ import asyncio
 app = FastAPI(title="Transcription Service")
 
 # Include the router from routes.py
-app.include_router(transcribe_router, prefix="/transcribe", tags=["Transcription"])
-
-
-
+app.include_router(transcribe_router, prefix="/api/v1/transcribe", tags=["Transcription"])
 
 async def health_check():
     while True:
