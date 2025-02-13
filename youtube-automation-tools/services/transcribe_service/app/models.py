@@ -2,9 +2,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-
-
-
 class WordTimestamp(BaseModel):  # Presuming you might implement word timestamps later
     start: float
     end: float
@@ -26,3 +23,11 @@ class TranscriptionInfo(BaseModel):
 class TranscriptionResult(BaseModel):
     segments: List[Segment]
     info: TranscriptionInfo
+
+class UserCredentials(BaseModel):
+    username: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str

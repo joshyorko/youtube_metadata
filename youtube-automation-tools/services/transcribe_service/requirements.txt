@@ -9,3 +9,5 @@ aiofiles
 pydantic-settings
 pytubefix
 moviepy
+python-jose
+passlib
