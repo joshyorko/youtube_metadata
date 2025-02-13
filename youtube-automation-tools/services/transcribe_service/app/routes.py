@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query, Depends
 from .services.transcribe import transcribe_audio_file, transcribe_youtube_video
 from .models import TranscriptionResult
-from ..auth import get_current_user
+from .auth import get_current_user  # Fixed relative import
 
 transcribe_router = APIRouter()
 
