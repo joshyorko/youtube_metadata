@@ -4,6 +4,7 @@ from ..models import (
     TranscriptionResult,
     Segment,
     TranscriptionInfo,
+    WordTimestamp,
 )
 from faster_whisper import WhisperModel
 import asyncio
@@ -21,16 +22,7 @@ logger = logging.getLogger(__name__)
 model = WhisperModel(
     "small",
     device="cpu",
-    compute_type="int8",
-    local_files_only=False,  # Allow downloading if model not found locally
-    download_root=None,  # Use default download location
-    cpu_threads=4,  # Adjust based on your CPU cores
-    num_workers=2,  # Number of workers for parallel processing
-    beam_size=5,  # Default beam size for better accuracy
-    condition_on_previous_text=True,  # Help maintain context between segments
-    no_speech_threshold=0.6,  # Whisper default, works well with VAD
-    compression_ratio_threshold=2.4,  # Whisper default
-    log_prob_threshold=-1.0  # Whisper default
+    compute_type="int8"
 )
 
 async def transcribe_audio_file(file: UploadFile) -> TranscriptionResult:
@@ -110,8 +102,6 @@ def debug_vad_output(segments_list, info, vad_params):
     logger.debug("VAD Debug Information:")
     logger.debug(f"VAD Parameters used: {vad_params}")
     logger.debug(f"Total duration: {info.duration}s")
-    logger.debug(f"Duration after VAD: {info.duration_after_vad}s")
-    logger.debug(f"Audio filtered: {info.duration - info.duration_after_vad:.2f}s")
     logger.debug(f"Number of segments: {len(segments_list)}")
     
     if segments_list:
@@ -133,58 +123,32 @@ async def transcribe_file(file_path: str) -> TranscriptionResult:
         file_size = os.path.getsize(file_path)
         logger.info(f"File size: {file_size} bytes")
         
-        # Initial VAD settings based on Silero VAD defaults
-        vad_params = {
-            "threshold": 0.5,
-            "min_speech_duration_ms": 250,
-            "max_speech_duration_s": float("inf"),
-            "min_silence_duration_ms": 2000,
-            "speech_pad_ms": 400,
-            "neg_threshold": 0.35
-        }
-        
-        logger.info("Starting transcription with initial VAD settings...")
+        # First attempt: use default VAD settings
         segments, info = await asyncio.to_thread(
             model.transcribe, 
             file_path,
             beam_size=5,
-            word_timestamps=True,  # Enable word timestamps
-            vad_filter=True,
-            vad_parameters=vad_params
+            word_timestamps=True  # Use default VAD behavior
         )
-        
         segments_list = list(segments)
-        debug_vad_output(segments_list, info, vad_params)
         
-        if len(segments_list) == 0:
-            logger.warning("No segments detected with initial VAD settings")
-            
-            # Try more lenient VAD settings
-            vad_params.update({
-                "threshold": 0.3,
-                "min_speech_duration_ms": 100,
-                "min_silence_duration_ms": 1000,
-                "speech_pad_ms": 500,
-                "neg_threshold": 0.2
-            })
-            
-            logger.info("Retrying with more lenient VAD settings...")
+        # If no segments were detected, try disabling VAD altogether
+        if not segments_list:
+            logger.warning("No segments detected with default VAD settings, retrying without VAD...")
             segments, info = await asyncio.to_thread(
                 model.transcribe, 
                 file_path,
                 beam_size=5,
                 word_timestamps=True,
                 vad_filter=True,
-                vad_parameters=vad_params
+                vad_parameters=dict(min_silence_duration_ms=500),
+                
             )
-            
             segments_list = list(segments)
-            debug_vad_output(segments_list, info, vad_params)
         
-        # Process segments with word timestamps
+        # Process segments as before
         processed_segments = []
         full_text_parts = []
-        
         for segment in segments_list:
             words = []
             if hasattr(segment, 'words') and segment.words:
@@ -197,7 +161,6 @@ async def transcribe_file(file_path: str) -> TranscriptionResult:
                     )
                     for word in segment.words
                 ]
-            
             processed_segments.append(
                 Segment(
                     start=segment.start,
@@ -238,5 +201,3 @@ async def transcribe_file(file_path: str) -> TranscriptionResult:
             logger.info(f"Temporary file removed: {file_path}")
         except Exception as e:
             logger.error(f"Error removing temporary file: {e}")
-
-    return transcription_result
