@@ -4,6 +4,25 @@ services:
   transcribe-service:
     build: ./services/transcribe_service
     image: ghcr.io/joshyorko/transcribe_service:latest
+    container_name: transcribe-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/transcribe_service:/app
+    environment:
+      - SERVICE_ENV="development"
+    networks:
+      - app_network
+    restart: always
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]
+    # CPU is default configuration
+    # GPU configuration is applied when using the 'gpu' profile
+
+  transcribe-service-gpu:
+    profiles:
+      - gpu
+    extends:
+      service: transcribe-service
     deploy:
       resources:
         reservations:
@@ -12,22 +31,10 @@ services:
               count: 1
               capabilities: [gpu]
     runtime: nvidia
-  
-    container_name: transcribe-service
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./services/transcribe_service:/app
     environment:
       - SERVICE_ENV="development"
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-    networks:
-      - app_network
-    restart: always
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]
-
-
 
   thumbnail-creation-service:
     build: ./services/thumbnail_creation_service
@@ -45,7 +52,6 @@ services:
     env_file:
       - ./.env
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
-
 
 networks:
   app_network:

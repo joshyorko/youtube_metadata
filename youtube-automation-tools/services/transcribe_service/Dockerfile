@@ -1,23 +1,21 @@
 # Use the official Python base image
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies (if needed)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libavcodec-extra \
     git \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file to the container
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
-
-# Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code to the container
+# Copy the application code
 COPY . .
 
 # Create a non-root user and switch to it
