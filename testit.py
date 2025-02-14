@@ -2,6 +2,11 @@ import requests
 from typing import Optional
 from rich import print
 import logging
+from rich.console import Console
+from rich.traceback import install as install_traceback
+
+install_traceback()
+console = Console()
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -28,14 +33,14 @@ class TranscribeClient:
             
             if response.status_code == 200:
                 self.token = response.json()["access_token"]
-                print("[green]Successfully logged in and obtained token[/green]")
+                console.print("[green]Successfully logged in and obtained token[/green]")
                 return True
             else:
-                print(f"[red]Login failed: {response.status_code} - {response.text}[/red]")
+                console.print(f"[red]Login failed: {response.status_code} - {response.text}[/red]")
                 return False
                 
         except Exception as e:
-            print(f"[red]Error during login: {str(e)}[/red]")
+            console.print(f"[red]Error during login: {str(e)}[/red]")
             return False
 
     def transcribe_video(self, youtube_url: str) -> dict:
@@ -56,17 +61,17 @@ class TranscribeClient:
             )
             
             if response.status_code == 200:
-                print("[green]Successfully transcribed video[/green]")
+                console.print("[green]Successfully transcribed video[/green]")
                 # Debug print to see raw response
-                print("\n[bold]Raw Response Data:[/bold]")
-                print(response.json())
+                console.print("\n[bold]Raw Response Data:[/bold]")
+                #console.print(response.json())
                 return response.json()
             else:
-                print(f"[red]Transcription failed: {response.status_code} - {response.text}[/red]")
+                console.print(f"[red]Transcription failed: {response.status_code} - {response.text}[/red]")
                 return {}
                 
         except Exception as e:
-            print(f"[red]Error during transcription: {str(e)}[/red]")
+            console.print(f"[red]Error during transcription: {str(e)}[/red]")
             return {}
 
 def main():
@@ -85,19 +90,19 @@ def main():
         result = client.transcribe_video(youtube_url)
         
         if result:
-            print("\n[bold]Transcription Result:[/bold]")
+            console.print("\n[bold]Transcription Result:[/bold]")
             
             # Print transcription segments
             for segment in result.get("segments", []):
-                print(f"\n[yellow]Time: {segment['start']:.2f}s -> {segment['end']:.2f}s[/yellow]")
-                print(f"Text: {segment['text']}")
+                console.print(f"\n[yellow]Time: {segment['start']:.2f}s -> {segment['end']:.2f}s[/yellow]")
+                console.print(f"Text: {segment['text']}")
             
             # Print transcription info
             info = result.get("info", {})
-            print(f"\n[bold]Info:[/bold]")
-            print(f"Language: {info.get('language', 'unknown')}")
-            print(f"Language Probability: {info.get('language_probability', 0):.2f}")
-            print(f"Duration: {(info.get('duration') or 0):.2f}s")
+            console.print(f"\n[bold]Info:[/bold]")
+            console.print(f"Language: {info.get('language', 'unknown')}")
+            console.print(f"Language Probability: {info.get('language_probability', 0):.2f}")
+            console.print(f"Duration: {(info.get('duration') or 0):.2f}s")
 
 if __name__ == "__main__":
     main()
