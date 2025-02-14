@@ -9,6 +9,7 @@ pydantic-settings
 pytubefix
 PyJWT
 passlib
+av
 
 
 #git+https://github.com/openai/whisper.git
