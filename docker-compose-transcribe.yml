@@ -3,6 +3,7 @@ name: transcribe-service
 services:
   transcribe-service:
     build: ./youtube-automation-tools/services/transcribe_service
+    image:  ghcr.io/joshyorko/transcribe-service:latest
     container_name: transcribe-service
     ports:
       - "8000:8000"
