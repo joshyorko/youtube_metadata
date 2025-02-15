@@ -2,12 +2,12 @@ name: transcribe-service
 
 services:
   transcribe-service:
-    build: ./services/transcribe_service
+    build: .
     container_name: transcribe-service
     ports:
       - "8000:8000"
     volumes:
-      - ./services/transcribe_service:/app
+      - ./transcribe_service:/app
     environment:
       - SERVICE_ENV="development"
     networks:
