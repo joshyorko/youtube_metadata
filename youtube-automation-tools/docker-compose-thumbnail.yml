@@ -1,0 +1,24 @@
+name: thumbnail-service
+
+services:
+
+  thumbnail-creation-service:
+    build: ./services/thumbnail_creation_service
+    image: ghcr.io/joshyorko/thumbnail_creation_service:latest
+    container_name: thumbnail-creation-service
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./services/thumbnail_creation_service:/app
+    environment:
+      - SERVICE_ENV="development"
+    networks:
+      - app_network
+    restart: always
+    env_file:
+      - ./.env
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+
+networks:
+  app_network:
+    driver: bridge
