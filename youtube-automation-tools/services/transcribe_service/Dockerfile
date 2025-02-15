@@ -23,7 +23,7 @@ RUN useradd -m myuser && chown -R myuser:myuser /app
 USER myuser
 
 # Expose the port on which the app will run
-EXPOSE 8000
+EXPOSE 8007
 
 # Start the FastAPI app using uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8007"]

@@ -25,7 +25,7 @@ The `/transcribe` endpoint is secured with JWT-based authentication. You need to
    - Send a POST request to the `/auth/token` endpoint with your username and password.
    - Example using `curl`:
      ```sh
-     curl -X POST "http://localhost:8000/auth/token" -H "Content-Type: application/x-www-form-urlencoded" -d "username=johndoe&password=secret"
+     curl -X POST "http://localhost:8007/auth/token" -H "Content-Type: application/x-www-form-urlencoded" -d "username=johndoe&password=secret"
      ```
    - The response will contain the JWT token.
 
@@ -33,7 +33,7 @@ The `/transcribe` endpoint is secured with JWT-based authentication. You need to
    - Include the token in the `Authorization` header of your requests to the `/transcribe` endpoint.
    - Example using `curl`:
      ```sh
-     curl -X POST "http://localhost:8000/transcribe" -H "Authorization: Bearer YOUR_TOKEN" -F "file=@path/to/your/file"
+     curl -X POST "http://localhost:8007/transcribe" -H "Authorization: Bearer YOUR_TOKEN" -F "file=@path/to/your/file"
      ```
 
 ### Environment Variables
