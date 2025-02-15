@@ -2,7 +2,7 @@ name: transcribe-service
 
 services:
   transcribe-service:
-    build: .
+    build: ./transcribe_service
     container_name: transcribe-service
     ports:
       - "8000:8000"
