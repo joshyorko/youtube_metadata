@@ -3,7 +3,6 @@ name: transcribe-service
 services:
   transcribe-service:
     build: ./services/transcribe_service
-    image: ghcr.io/joshyorko/transcribe_service:latest
     container_name: transcribe-service
     ports:
       - "8000:8000"
