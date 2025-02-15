@@ -91,7 +91,7 @@ def main():
         
         if result:
             console.print("\n[bold]Transcription Result:[/bold]")
-            
+            console.print(result)
             # Print transcription segments
             for segment in result.get("segments", []):
                 console.print(f"\n[yellow]Time: {segment['start']:.2f}s -> {segment['end']:.2f}s[/yellow]")

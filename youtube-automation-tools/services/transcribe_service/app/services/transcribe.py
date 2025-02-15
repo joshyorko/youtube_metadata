@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize the model with better performance settings
 model = WhisperModel(
-    "small",
+    "small.en",
     device="cpu",
     compute_type="int8"
 )
