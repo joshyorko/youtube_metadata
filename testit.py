@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+
+# /// script
+# dependencies = [
+#     "requests",
+#     "rich"        
+# ]
+# ///
+
+
+
 import requests
 from typing import Optional
 from rich import print
