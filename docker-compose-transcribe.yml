@@ -5,7 +5,8 @@ services:
     build: ./youtube-automation-tools/services/transcribe_service
     image:  ghcr.io/joshyorko/transcribe-service:latest
     container_name: transcribe-service
-
+    ports:
+        "8007"
     environment:
       - SERVICE_ENV="PRODUCTION"
     networks:
